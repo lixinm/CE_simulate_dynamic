@@ -1,0 +1,117 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# VSCode settings
+.vscode/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Poetry
+# 通常 poetry.lock 要提交（除非特别想忽略）
+#poetry.lock
+
+# Virtual environments
+.env/
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# wandb artifact directory
+wandb/
+
+# pyenv
+.python-version
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Pytest
+.cache/
+
+# Coverage reports
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# pytest plugin cache
+.pytest_cache/
+
+# Temporary files
+*.log
+*.pot~
+*.mo~
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# Ignore specific file types
+*.png
+*.html
+*.csv
+
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Spotlight search index files
+.Spotlight-V100
+
+# Trash folder which might appear on external disks
+.Trashes
+
+# macOS volume info
+.VolumeIcon.icns
+
+# macOS finder files
+.fseventsd
+.fseventsd/
+.fseventsd/*
+
+# Editor backups
+*~
+
+# System backup files
+*.bak
+
+# Other system files
+Icon?
