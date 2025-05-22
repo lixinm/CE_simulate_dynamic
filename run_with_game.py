@@ -10,7 +10,7 @@ from visualization import Visualizer
 import glob
 import logging
 import copy
-from game import Game
+from game import Game, GameWithFullGridLocalPeak
 import numpy as np
 
 def main(config_dir: str = "config") -> None:
@@ -57,14 +57,17 @@ def main(config_dir: str = "config") -> None:
         setting_name = Path(config_file).stem
         logging.info(f"Processing {setting_name}")
         
-        try:
-            # run_simulations関数を実行
-            result = run_simulations(config_path, setting_name)
-            all_results[setting_name] = result
-            logging.info(f"Completed simulation for {setting_name}")
-        except Exception as e:
-            logging.error(f"Error processing {setting_name}: {str(e)}")
-            continue
+        result = run_simulations(config_path, setting_name)
+        all_results[setting_name] = result
+        logging.info(f"Completed simulation for {setting_name}")
+        # try:
+        #     # run_simulations関数を実行
+        #     result = run_simulations(config_path, setting_name)
+        #     all_results[setting_name] = result
+        #     logging.info(f"Completed simulation for {setting_name}")
+        # except Exception as e:
+        #     logging.error(f"Error processing {setting_name}: {str(e)}")
+        #     continue
     
     # 全結果の可視化
     visualizer = Visualizer(result_dir)
@@ -112,7 +115,8 @@ def run_simulations(config_path: Path, setting_name: str) -> pd.DataFrame:
         )
 
         # ゲームインスタンスの作成
-        game = Game()
+        #game = Game()
+        game = GameWithFullGridLocalPeak()
         
         # シミュレーション実行
         results_per_run = []
@@ -132,7 +136,7 @@ def run_simulations(config_path: Path, setting_name: str) -> pd.DataFrame:
         result = pd.concat(results_per_run, ignore_index=True)
         if result is not None:  # Noneチェックを追加
             results.append(result)    
-    
+
     revenue_histories = [result['revenue_history'] for result in results]
     product_cost_histories = [result['product_cost_history'] for result in results]
     repair_cost_histories = [result['repair_cost_history'] for result in results]

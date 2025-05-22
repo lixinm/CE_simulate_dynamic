@@ -12,6 +12,7 @@ import logging
 import copy
 from game import Game
 import numpy as np
+import traceback
 
 def main(config_dir: str = "config") -> None:
     """
@@ -57,14 +58,18 @@ def main(config_dir: str = "config") -> None:
         setting_name = Path(config_file).stem
         logging.info(f"Processing {setting_name}")
         
-        try:
-            # run_simulations関数を実行
-            result = run_simulations(config_path, setting_name)
-            all_results[setting_name] = result
-            logging.info(f"Completed simulation for {setting_name}")
-        except Exception as e:
-            logging.error(f"Error processing {setting_name}: {str(e)}")
-            continue
+        # try:
+        #     # run_simulations関数を実行
+        #     result = run_simulations(config_path, setting_name)
+        #     all_results[setting_name] = result
+        #     logging.info(f"Completed simulation for {setting_name}")
+        # except Exception as e:
+        #     #logging.error(f"Error processing {setting_name}: {str(e)}")
+        #     #continue
+        #     traceback.print_exc()   
+        result = run_simulations(config_path, setting_name)
+        all_results[setting_name] = result
+        logging.info(f"Completed simulation for {setting_name}")
     
     # 全結果の可視化
     visualizer = Visualizer(result_dir)

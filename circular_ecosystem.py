@@ -449,6 +449,7 @@ class CircularEcosystem_RevenueShare:
 
         # 製品の生成
         new_products = []
+        #a=self.manufacturer.create_products(self.product_attributes, year, self.manufacturer_attributes["base_production_volume"])
         new_products.extend(self.manufacturer.create_products(self.product_attributes, year, self.manufacturer_attributes["base_production_volume"]))
         new_products.extend(self.paas_provider.create_products(self.product_attributes, year, self.paas_provider_attributes["base_production_volume"]))
         self.products.extend(new_products)
@@ -466,6 +467,13 @@ class CircularEcosystem_RevenueShare:
             for product in available_products:
                 if product_category.provider == product.provider:
                     product_category.add_products(product)
+
+
+        
+        # price decsion process
+
+        #self.price_decision_process()
+
 
         # # 消費者に制度を適用
         # for consumer in consumers:
@@ -556,7 +564,15 @@ class CircularEcosystem_RevenueShare:
         material_flow_all = material_flow_all.groupby(["source", "target"]).sum().reset_index()
         
         # 財務フローの履歴データを取得
-        financial_flow_all = self.business_model.get_financial_flow_history().groupby(["source", "target"]).sum().reset_index()
+        # financial_flow_all = self.business_model.get_financial_flow_history().groupby(["source", "target"]).sum().reset_index()
+        ffhist = self.business_model.get_financial_flow_history()
+
+        if ffhist.empty:
+            financial_flow_all = pd.DataFrame(columns=["source","target","value"])
+        else:
+            financial_flow_all = (
+                ffhist.groupby(["source","target"], as_index=False)["value"].sum()
+            )      
 
         # 結果の生成
         result = {
@@ -570,6 +586,26 @@ class CircularEcosystem_RevenueShare:
         }
         
         return pd.DataFrame([result])
+    
+    # def price_decision_process(self):
+    #     """
+    #     価格決定プロセスを実行するメソッド
+    #     """
+    #     # 各プロバイダーの価格を取得
+    #     prices = {
+    #         'manufacturer': self.manufacturer.get_price(),
+    #         'paas_provider': self.paas_provider.get_price(),
+    #         'reuse_provider': self.reuse_provider.get_price(),
+    #         'remanufacturer': self.remanufacturer.get_price(),
+    #         'recycler': self.recycler.get_price()
+    #     }
+        
+    #     # 価格決定ロジックを実装
+    #     # 例: 各プロバイダーの価格を調整する
+    #     for provider_name, provider in prices.items():
+    #         if provider:
+    #             new_price = provider * 1.05
+
 
 def create_circular_ecosystem(circular_ecosystem_type: CircularEcosystemType) -> CircularEcosystem:
     """

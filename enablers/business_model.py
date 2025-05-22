@@ -33,7 +33,10 @@ class BusinessModel:
         self._reset_product_costs()
         self._reset_repair_costs()
         self._init_history()
-        self.financial_flow_data = []
+        #self.financial_flow_data = []
+        self.financial_flow_data = pd.DataFrame(
+             columns=["year", "source", "target", "value"]   
+)
     
     def _init_history(self) -> None:
         """履歴データの初期化"""
@@ -61,12 +64,18 @@ class BusinessModel:
         
     def record_financial_flow(self, source: str, target: str, value: float) -> None:
         """財務フローの記録"""
-        self.financial_flow_data.append({'source': source, 'target': target, 'value': value})
+        #self.financial_flow_data.append({'source': source, 'target': target, 'value': value})
+        self.financial_flow_data.loc[len(self.financial_flow_data)] = [
+                self._current_year, source, target, value   ]
 
+    # def get_financial_flow_history(self) -> pd.DataFrame:
+    #     """財務フローの履歴データを取得"""
+    #     self.financial_flow = pd.DataFrame(self.financial_flow_data) 
+    #     return self.financial_flow
+    
     def get_financial_flow_history(self) -> pd.DataFrame:
-        """財務フローの履歴データを取得"""
-        self.financial_flow = pd.DataFrame(self.financial_flow_data) 
-        return self.financial_flow
+        """返回（拷贝后的）财务流水表"""
+        return self.financial_flow_data.copy()
 
 class StandardBusinessModel(BusinessModel):
     """従来型ビジネスモデル"""
@@ -86,6 +95,7 @@ class StandardBusinessModel(BusinessModel):
         各ステークホルダーの売上を計算
         """
         # 売上の初期化
+        self._current_year = year
         self._reset_revenues()
 
         # 各プロバイダーの収益を計算
@@ -204,6 +214,7 @@ class RevenueSharingBusinessModel(BusinessModel):
         各ステークホルダーの売上を計算
         """
         # 売上の初期化
+        self._current_year = year
         self._reset_revenues()
 
         # 各プロバイダーの収益を計算
